@@ -1,1 +1,38 @@
-<p>fingerprintscaner works!</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Lector Biométrico</title>
+   
+</head>
+<body>
+    <div class="scanner-container">
+        <div class="scanner-display">
+            <div class="scan-beam"></div>
+        </div>
+        <p class="status-indicator" id="status">Esperando acción...</p>
+        <button class="scan-button" onclick="initiateScan()">Escanear Huella</button>
+    </div>
+
+    <script>
+        let isScanning = false;
+        
+        function initiateScan() {
+            if(isScanning) return;
+            
+            isScanning = true;
+            document.getElementById('status').textContent = "Escaneando...";
+            
+            setTimeout(() => {
+                const result = Math.random() > 0.4;
+                document.getElementById('status').textContent = result ? 
+                    "✓ Huella verificada" : "✗ Error de reconocimiento";
+                document.getElementById('status').style.color = result ? "#00ff88" : "#ff0055";
+                isScanning = false;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
