@@ -3,36 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Lector Biométrico</title>
-   
+    <title>Sistema Biométrico</title>
+    
 </head>
 <body>
     <div class="scanner-container">
         <div class="scanner-display">
             <div class="scan-beam"></div>
         </div>
-        <p class="status-indicator" id="status">Esperando acción...</p>
-        <button class="scan-button" onclick="initiateScan()">Escanear Huella</button>
+        
+        <div class="user-data" id="userData">
+            <div class="data-grid">
+                <img src="https://randomuser.me/api/portraits/men/75.jpg" class="user-photo" id="userPhoto">
+                <div class="data-item">
+                    <strong>Nombre:</strong> <span id="userName">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Identificación:</strong> <span id="userId">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Edad:</strong> <span id="userAge">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Acceso:</strong> <span id="userAccess">-</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="scan-button" id="scanButton">Verificar Identidad</button>
     </div>
 
     <script>
-        let isScanning = false;
         
-        function initiateScan() {
-            if(isScanning) return;
-            
-            isScanning = true;
-            document.getElementById('status').textContent = "Escaneando...";
-            
-            setTimeout(() => {
-                const result = Math.random() > 0.4;
-                document.getElementById('status').textContent = result ? 
-                    "✓ Huella verificada" : "✗ Error de reconocimiento";
-                document.getElementById('status').style.color = result ? "#00ff88" : "#ff0055";
-                isScanning = false;
-            }, 2000);
+    const users = {
+        "id-1": {
+            name: "Usuario 1",
+            id: "ID-758430",
+            age: 34,
+            access: "Nivel 3",
+            photo: "https://randomuser.me/api/portraits/men/20.jpg"
+        },
+        "id-2": {
+            name: "Usuario 2",
+            id: "ID-982361",
+            age: 28,
+            access: "Nivel 2",
+            photo: "https://randomuser.me/api/portraits/women/65.jpg"
         }
-    </script>
+    };
+
+    let hideTimeout;
+    const userData = document.getElementById('userData');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        userData.classList.remove('visible');
+    });
+
+    document.getElementById('scanButton').addEventListener('click', () => {
+        clearTimeout(hideTimeout);
+        const success = Math.random() > 0.1;
+        const userKey = success ? "id-"+(Math.random() > 0.5 ? 1 : 2) : null;
+
+        if(userKey) {
+            const user = users[userKey];
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userId').textContent = user.id;
+            document.getElementById('userAge').textContent = user.age;
+            document.getElementById('userAccess').textContent = user.access;
+            document.getElementById('userPhoto').src = user.photo;
+            userData.classList.add('visible');
+            
+            hideTimeout = setTimeout(() => {
+                userData.classList.remove('visible');
+            }, 3000);
+        } else {
+            userData.classList.remove('visible');
+            alert("Acceso denegado");
+        }
+    });
+</script>
+    
 </body>
 </html>

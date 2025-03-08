@@ -14,5 +14,5 @@ import { FingerprintscanerComponent } from './fingerprintscaner/fingerprintscane
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'fingerprint';
+  title = 'fingerprint Biometric Authentication';
 }
